@@ -52,8 +52,7 @@
       </el-row>
     </div>
 
-
-    <div>
+    <div class="right">
       <router-view></router-view>
     </div>
   </div>
@@ -65,18 +64,14 @@
     name: 'catMain',
     methods:{
       methods: {
-        handleOpen(key, keyPath) {
-          console.log(key, keyPath);
-        },
-        handleClose(key, keyPath) {
-          console.log(key, keyPath);
-        }
+        
       }
     }
   }
 </script>
 
 <style scoped>
+
 
   a{
     text-decoration: none;
