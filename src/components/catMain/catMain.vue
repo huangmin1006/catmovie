@@ -18,42 +18,49 @@
 
               <router-link to="/Admin">
                 <el-menu-item index="1">
+                  <i class="el-icon-menu"></i>
                   管理员
                 </el-menu-item>
               </router-link>
 
               <router-link to="/user">
                 <el-menu-item index="2">
+                  <i class="el-icon-star-on"></i>
                   用户
                 </el-menu-item>
               </router-link>
 
               <router-link to="/movie">
                 <el-menu-item index="3">
+                  <i class="el-icon-picture"></i>
                   电影
                 </el-menu-item>
               </router-link>
 
               <router-link to="/coming">
                 <el-menu-item index="4">
+                  <i class="el-icon-more"></i>
                   即将上映
                 </el-menu-item>
               </router-link>
 
               <router-link to="/theater">
                 <el-menu-item index="5">
+                  <i class="el-icon-search"></i>
                   院线管理
                 </el-menu-item>
               </router-link>
 
               <router-link to="/news">
                 <el-menu-item index="6">
+                  <i class="el-icon-date"></i>
                   资讯
                 </el-menu-item>
               </router-link>
 
               <router-link to="/hot">
                 <el-menu-item index="7">
+                  <i class="el-icon-plus"></i>
                   热映
                 </el-menu-item>
               </router-link>
@@ -140,16 +147,13 @@
     margin: 30px 0 50px 50px;
   }
 
-  .left{
-    text-align: center;
-  }
-
   .left>div>div{
     width: 200px;
   }
 
   .left li{
     border-bottom: 1px solid #000;
+    padding-left: 50px!important;
   }
 
   .right{
