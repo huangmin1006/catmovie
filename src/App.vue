@@ -13,7 +13,9 @@ export default {
 </script>
 
 <style scoped>
-#app {
-
+body{
+  margin: 0;
 }
+
+
 </style>
