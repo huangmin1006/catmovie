@@ -8,6 +8,8 @@ import Hot from '../components/hot'
 import Movie from '../components/movie'
 import News from '../components/news'
 import User from '../components/user'
+import Theater from '../components/theater'
+import Sign from '../components/sign'
 
 Vue.use(Router);
 
@@ -16,6 +18,10 @@ export default new Router({
     path: '/',
     name: 'App',
     component: App
+  }, {
+    path: '/Sign',
+    name: 'Sign',
+    component: Sign
   }, {
     path: '/CatMain',
     name: 'CatMain',
@@ -38,6 +44,9 @@ export default new Router({
     }, {
       path: '/News',
       component: News
+    }, {
+      path: '/Theater',
+      component: Theater
     }]
   }]
 })
