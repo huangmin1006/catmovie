@@ -96,7 +96,7 @@
   }
 </script>
 
-<style scoped>
+<style scoped="">
 
   /*遮罩层*/
   /*.closeDiv{*/
