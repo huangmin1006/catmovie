@@ -7,14 +7,14 @@
 
     <header>
       <h1>猫眼后台管理系统</h1>
-      <span>用户名</span>
+      <span>{{admin}}</span>
       <button @click="toSign">退出</button>
     </header>
     <div class="main">
       <div class="left">
         <el-row class="tac">
           <el-col :span="8">
-            <el-menu default-active="1" class="el-menu-vertical-demo">
+            <el-menu default-active="0" class="el-menu-vertical-demo">
 
               <router-link to="/Admin">
                 <el-menu-item index="1">
@@ -26,28 +26,28 @@
               <router-link to="/user">
                 <el-menu-item index="2">
                   <i class="el-icon-star-on"></i>
-                  用户
+                  排片信息
                 </el-menu-item>
               </router-link>
 
               <router-link to="/movie">
                 <el-menu-item index="3">
                   <i class="el-icon-picture"></i>
-                  电影
+                  电影信息
                 </el-menu-item>
               </router-link>
 
-              <router-link to="/coming">
+              <router-link to="/MovieHall">
                 <el-menu-item index="4">
                   <i class="el-icon-more"></i>
-                  即将上映
+                  影厅信息
                 </el-menu-item>
               </router-link>
 
               <router-link to="/theater">
                 <el-menu-item index="5">
                   <i class="el-icon-search"></i>
-                  院线管理
+                  影院信息
                 </el-menu-item>
               </router-link>
 
@@ -55,13 +55,6 @@
                 <el-menu-item index="6">
                   <i class="el-icon-date"></i>
                   资讯
-                </el-menu-item>
-              </router-link>
-
-              <router-link to="/hot">
-                <el-menu-item index="7">
-                  <i class="el-icon-plus"></i>
-                  热映
                 </el-menu-item>
               </router-link>
 
@@ -79,19 +72,31 @@
 
 
 <script>
+  import axios from 'axios'
+
+  let getSession = axios.get('http://127.0.0.1:8888/getSession',{});
+  console.log(getSession);
+
   export default {
     name: 'catMain',
+
+    data(){
+        return {
+            admin: ""
+        }
+    },
+
     methods:{
       toSign(){
-        this.$router.push('/Sign');
+        this.$router.push('/login');
       }
-    }
+    },
+
+
   }
 </script>
 
 <style scoped>
-
-
 
   /*遮罩层*/
   /*.closeDiv{*/

@@ -3,13 +3,13 @@ import Router from 'vue-router'
 import App from '../App.vue'
 import CatMain from '../components/catMain/catMain.vue'
 import Admin from '../components/admin/admin.vue'
-import Coming from '../components/coming/coming.vue'
+import MovieHall from '../components/movieHall/movieHall.vue'
 import Hot from '../components/hot/hot.vue'
 import Movie from '../components/movie/movie.vue'
 import News from '../components/news/news.vue'
 import User from '../components/user/user.vue'
 import Theater from '../components/theater/theater.vue'
-import Sign from '../components/sign/sign.vue'
+import Login from '../components/login/login.vue'
 
 Vue.use(Router);
 
@@ -19,9 +19,9 @@ export default new Router({
     name: 'App',
     component: App
   }, {
-    path: '/Sign',
-    name: 'Sign',
-    component: Sign
+    path: '/Login',
+    name: 'Login',
+    component: Login
   }, {
     path: '/CatMain',
     name: 'CatMain',
@@ -30,8 +30,9 @@ export default new Router({
       path: '/Admin',
       component: Admin
     }, {
-      path: '/Coming',
-      component: Coming
+      path: '/MovieHall',
+      name: 'MovieHall',
+      component: MovieHall
     }, {
       path: '/Movie',
       component: Movie

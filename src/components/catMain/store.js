@@ -1,0 +1,1 @@
+const GETSESSION = "GETSESSION";
