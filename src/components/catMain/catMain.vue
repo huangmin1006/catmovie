@@ -23,7 +23,7 @@
                 </el-menu-item>
               </router-link>
 
-              <router-link to="/user">
+              <router-link to="/RowPiece">
                 <el-menu-item index="2">
                   <i class="el-icon-star-on"></i>
                   排片信息
@@ -44,9 +44,9 @@
                 </el-menu-item>
               </router-link>
 
-              <router-link to="/theater">
+              <router-link to="/Cinema">
                 <el-menu-item index="5">
-                  <i class="el-icon-search"></i>
+                  <i class="el-icon-more"></i>
                   影院信息
                 </el-menu-item>
               </router-link>
@@ -73,16 +73,16 @@
 
 <script>
   import axios from 'axios'
-
-  let getSession = axios.get('http://127.0.0.1:8888/getSession',{});
-  console.log(getSession);
+//  获取session
+//  let getSession = axios.get('http://127.0.0.1:8888/getSession',{});
+//  console.log(getSession);
 
   export default {
     name: 'catMain',
 
     data(){
         return {
-            admin: ""
+            admin: "123"
         }
     },
 

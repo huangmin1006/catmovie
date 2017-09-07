@@ -1,5 +1,5 @@
 <template>
-  <h1>院线管理</h1>
+  <h1>rowPiece</h1>
 </template>
 
 <script>

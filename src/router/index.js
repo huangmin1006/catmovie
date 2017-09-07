@@ -4,11 +4,10 @@ import App from '../App.vue'
 import CatMain from '../components/catMain/catMain.vue'
 import Admin from '../components/admin/admin.vue'
 import MovieHall from '../components/movieHall/movieHall.vue'
-import Hot from '../components/hot/hot.vue'
 import Movie from '../components/movie/movie.vue'
 import News from '../components/news/news.vue'
-import User from '../components/user/user.vue'
-import Theater from '../components/theater/theater.vue'
+import Cinema from '../components/cinema/cinema.vue'
+import RowPiece from '../components/rowPiece/rowPiece.vue'
 import Login from '../components/login/login.vue'
 
 Vue.use(Router);
@@ -37,17 +36,14 @@ export default new Router({
       path: '/Movie',
       component: Movie
     }, {
-      path: '/Hot',
-      component: Hot
+      path: '/RowPiece',
+      component: RowPiece
     }, {
-      path: '/User',
-      component: User
+      path: '/Cinema',
+      component: Cinema
     }, {
       path: '/News',
       component: News
-    }, {
-      path: '/Theater',
-      component: Theater
     }]
   }]
 })
