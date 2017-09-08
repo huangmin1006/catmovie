@@ -9,11 +9,6 @@ const store = {
   namespaced: true,
   state:{
 
-    // DIV内容显示选择
-    divShow: [{
-      a:1
-    }],
-
     // 列表数据
     tableList: [],
 
@@ -21,7 +16,7 @@ const store = {
 
   mutations:{
     [GET_CINEMA_LIST](state, tableList) {
-      state.tableList = tableList.obj;
+      state.tableList = tableList;
     }
   },
 
@@ -57,11 +52,12 @@ const store = {
     },
 
 
-    async[ASYNC_GET_CINEMA_LIST](context) {
+    // 获取影院数据
+    async[ASYNC_GET_CINEMA_LIST]({commit}) {
       const {
         data
       } = await axios.get("http://localhost:8888/cinema/find");
-      context.commit({type:GET_CINEMA_LIST,obj:data})
+      commit(GET_CINEMA_LIST,data)
     }
   }
 

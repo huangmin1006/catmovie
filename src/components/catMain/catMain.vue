@@ -37,7 +37,7 @@
                 </el-menu-item>
               </router-link>
 
-              <router-link to="/MovieHall">
+              <router-link to="/VideoHall">
                 <el-menu-item index="4">
                   <i class="el-icon-more"></i>
                   影厅信息

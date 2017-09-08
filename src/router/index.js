@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import App from '../App.vue'
 import CatMain from '../components/catMain/catMain.vue'
 import Admin from '../components/admin/admin.vue'
-import MovieHall from '../components/movieHall/movieHall.vue'
+import VideoHall from '../components/videoHall/videoHall.vue'
 import Movie from '../components/movie/movie.vue'
 import News from '../components/news/news.vue'
 import Cinema from '../components/cinema/cinema.vue'
@@ -29,9 +29,9 @@ export default new Router({
       path: '/Admin',
       component: Admin
     }, {
-      path: '/MovieHall',
-      name: 'MovieHall',
-      component: MovieHall
+      path: '/VideoHall',
+      name: 'VideoHall',
+      component: VideoHall
     }, {
       path: '/Movie',
       component: Movie
