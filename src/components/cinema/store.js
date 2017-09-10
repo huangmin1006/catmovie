@@ -3,7 +3,10 @@ export const GET_CINEMA_LIST = "GET_CINEMA_LIST";
 export const ASYNC_ADD_CINEMA = "ASYNC_ADD_CINEMA";
 export const ASYNC_GET_CINEMA_LIST = "ASYNC_GET_CINEMA_LIST";
 export const ASYNC_DEL_CINEMA = "ASYNC_DEL_CINEMA";
+export const ASYNC_DEL_HALL = "ASYNC_DEL_HALL";
 
+
+let delCinemaId = null;
 
 const store = {
   namespaced: true,
@@ -40,8 +43,9 @@ const store = {
       dispatch(ASYNC_GET_CINEMA_LIST);
     },
 
-    //删除数据
+    //删除影院数据
     async[ASYNC_DEL_CINEMA]({dispatch}, cinema) {
+      delCinemaId = cinema._id;
       await axios.get("http://localhost:8888/cinema/del", {
         params:{
           _id: cinema._id
@@ -49,6 +53,16 @@ const store = {
       }, cinema);
       // 数据改变自动刷新数据
       dispatch(ASYNC_GET_CINEMA_LIST);
+    },
+
+
+    //删除影院同时根据影院ID删除相关影厅
+    async[ASYNC_DEL_HALL]({dispatch}, cinema) {
+      await axios.get("http://localhost:8888/videoHall/del", {
+        params:{
+          _id: delCinemaId
+        }
+      }, cinema);
     },
 
 

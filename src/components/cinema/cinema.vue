@@ -1,7 +1,7 @@
 <template>
   <div class="cinema-main">
 
-    <el-tabs type="border-card">
+    <el-tabs v-model="editableTabsValue" type="border-card">
 
       <el-tab-pane label="增加影院">
         <div class="cinemaAdd">
@@ -100,7 +100,7 @@
 <script>
   import axios from "axios"
   import {mapState} from "vuex"
-  import {ASYNC_ADD_CINEMA,ASYNC_GET_CINEMA_LIST} from "./store"
+  import {ASYNC_ADD_CINEMA,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST} from "./store"
   import {mapActions } from "vuex"
 
 
@@ -131,18 +131,11 @@
     },
 
     methods:{
-      ...mapActions("cinema", [ASYNC_ADD_CINEMA,ASYNC_GET_CINEMA_LIST]),
+      ...mapActions("cinema", [ASYNC_ADD_CINEMA,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST]),
 
 //      移除数据
-      async deleteRow(index, rows) {
-        await axios.get("http://localhost:8888/cinema/del",{
-          params: {
-            _id:rows[index]._id
-          }
-        });
-        this.$store.dispatch(this[ASYNC_GET_CINEMA_LIST]({
-          _id:rows[index]._id
-        }));
+      deleteRow(index, rows) {
+        this[ASYNC_DEL_CINEMA]({_id:rows[index]._id});
       },
 
 
@@ -152,7 +145,6 @@
         if(val){
           this.currentRow = val;
         }
-        console.log("选中")
       },
 
       //      取消按钮
@@ -166,6 +158,7 @@
 
 //      增加电影院
       addCinema(){
+        this.editableTabsValue = '1';
         let obj = {
           cinemaName: this.formLabelAlign.cinemaName,
           cityName: this.formLabelAlign.cityName,
@@ -173,8 +166,7 @@
           telephone: this.formLabelAlign.telephone
         };
         this[ASYNC_ADD_CINEMA](obj);
-        this.editableTabsValue = '1';
-//        closeCinema();
+        this.closeCinema();
       },
 
     }

@@ -114,9 +114,9 @@
       this[ASYNC_GET_CINEMA_LIST]({});
     },
 
-//    mounted() {
-//      console.log(this)
-//    },
+    mounted() {
+//      console.log(this.$store._actions.videoHall/ASYNC_DEL_HALL)
+    },
 
 
     data() {
@@ -139,7 +139,6 @@
 
     //函数集合
     methods: {
-
       ...mapActions("videoHall", [ASYNC_GET_CINEMA_LIST,
                                     ASYNC_DEL_HALL,
                                     GET_HALL_LIST,
@@ -158,30 +157,26 @@
         if(this.currentRow._id){
           this.editableTabsValue = "1";
           this.videoHall.id = this.currentRow._id;
-          console.log(this.videoHall.id);
-          this[ASYNC_CINEMAID_GET_HALL_LIST]({id:this.videoHall.id});
+          this[ASYNC_CINEMAID_GET_HALL_LIST]({_id:this.videoHall.id});
         }
       },
 
 
-      // 移除数据(有BUG，不能调用状态机actions函数)
-      async deleteRow() {
-        await this.$store.dispatch({
-          type: ASYNC_DEL_HALL,
-          _id: this.videoHall.id
-        })
+      // 移除数据(有BUG，命名空间actions函数)
+      deleteRow(index, rows) {
+        this[ASYNC_DEL_HALL]({_id:rows[index]._id,cinemaID:rows[index].cinemaID})
       },
 
 
-      //增加放映厅数据
+      //立即增加按钮  增加 → 影厅数据
       addHallData(){
-          let obj = {
-            cinemaID: this.videoHall.id,
-            hallName: this.form.name,
-            seatLine: this.seatLine,
-            seatList: this.seatList
-          };
-          this[ASYNC_ADD_HALL](obj);
+        let obj = {
+          cinemaID: this.videoHall.id,
+          hallName: this.form.name,
+          seatLine: this.seatLine,
+          seatList: this.seatList,
+        };
+        this[ASYNC_ADD_HALL](obj);
       },
 
 

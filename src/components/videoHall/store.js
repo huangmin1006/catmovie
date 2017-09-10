@@ -12,9 +12,11 @@ export const GET_CINEMA_LIST = "GET_CINEMA_LIST";
 export const ASYNC_ADD_HALL = "ASYNC_ADD_HALL";
 export const ASYNC_GET_CINEMA_LIST = "ASYNC_GET_CINEMA_LIST";
 export const ASYNC_CINEMAID_GET_HALL_LIST = "ASYNC_CINEMAID_GET_HALL_LIST";
-export const ASYNC_ADD_GET_HALL_LIST = "ASYNC_ADD_GET_HALL_LIST";
+export const ASYNC_GET_HALL_LIST = "ASYNC_ADD_GET_HALL_LIST";
 export const ASYNC_DEL_HALL = "ASYNC_DEL_HALL";
 
+
+let getHallList = null;
 
 const store = {
   namespaced: true,
@@ -53,6 +55,7 @@ const store = {
 
     // 增加影厅
     async[ASYNC_ADD_HALL]({dispatch}, videoHall) {
+      getHallList = videoHall.cinemaID;
       function sets(seatLine, seatList) {
         let arr = [];
         for(let i = 1; i <= seatLine;i++ ){
@@ -72,19 +75,18 @@ const store = {
           seatData: JSON.stringify(sets(10,10))
         }
       }, videoHall);
-      // 数据改变自动刷新数据
-      dispatch(ASYNC_ADD_GET_HALL_LIST);
+      dispatch(ASYNC_GET_HALL_LIST);
     },
 
 
     //删除数据
     async[ASYNC_DEL_HALL]({dispatch}, videoHall) {
+      getHallList = videoHall.cinemaID;
       let val = axios.get("http://localhost:8888/videoHall/del", {
         params:{
           _id: videoHall._id
         }
       }, videoHall);
-      console.log(val);
       // 数据改变自动刷新数据
       dispatch(ASYNC_GET_HALL_LIST);
     },
@@ -106,25 +108,25 @@ const store = {
       } = await axios.get("http://localhost:8888/videoHall/find",{
         params: {
           findType:"exact",
-          cinemaID: videoHall.id
+          cinemaID: videoHall._id
         }
       });
       commit(GET_HALL_LIST,data);
     },
 
 
-    // 增加时刷新影厅列表
-    async[ASYNC_ADD_GET_HALL_LIST]({commit},videoHall) {
+    //增加删除时刷新相关影院的影厅
+    async[ASYNC_GET_HALL_LIST]({commit},videoHall){
       const {
         data
       } = await axios.get("http://localhost:8888/videoHall/find",{
         params: {
           findType:"exact",
+          cinemaID: getHallList
         }
       });
       commit(GET_HALL_LIST,data);
-    },
-
+    }
   }
 
 };
