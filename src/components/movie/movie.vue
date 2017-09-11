@@ -9,11 +9,13 @@
           :data='tableData'
           border
           style="width: 100%"
+          height="300"
           @cell-mouse-enter="replace_id">
           <el-table-column
             prop="name"
             label="电影名"
-            width="120">
+            width="120"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="type"
@@ -23,7 +25,8 @@
           <el-table-column
             prop="desc"
             label="电影简介"
-            width="300">
+            width="300"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="score"
@@ -33,12 +36,14 @@
           <el-table-column
             prop="peopleName"
             label="演职人员"
-            width="200">
+            width="200"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             prop="people"
             label="想看人数"
-            width="120">
+            width="120"
+            show-overflow-tooltip>
           </el-table-column>
           <el-table-column
             label="操作"
@@ -60,6 +65,8 @@
 
         </el-table>
       </el-tab-pane>
+
+
       <!-- 增加页面 -->
       <el-tab-pane name="two">
         <span slot="label"><i class="el-icon-date"></i> 新增电影</span>
@@ -86,7 +93,7 @@
               <el-option  label="激光放映厅" value="类型五"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="上映时间">
+          <el-form-item label="上映时间" required>
             <el-col :span="11">
               <el-form-item prop="date">
                 <el-date-picker type="date" placeholder="上映日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
@@ -270,8 +277,8 @@
   import {ASYNC_ADD_MOVIE,
     ASYNC_UPDATE_MIVIE,
     ASYNC_GET_MOVIE_LIST,
-    ASYNC_GET_MOVIE_LIST_REPLACE
-    ,ASYNC_GET_MOVIE_LIST_DEL} from "./store.js"
+    ASYNC_GET_MOVIE_LIST_REPLACE,
+    ASYNC_GET_MOVIE_LIST_DEL} from "./store.js"
   import {mapActions} from "vuex"
 
   export default {
@@ -290,6 +297,8 @@
     },
 
     methods: {
+
+
       // 删除
       async	deleteRow(index, rows) {
         await this.$store.dispatch({
@@ -305,17 +314,17 @@
           type:ASYNC_GET_MOVIE_LIST_REPLACE,
           id:this.option_id
         })
-        this.ruleForm.name = this.updateData.name,
-          this.ruleForm.eName = this.updateData.eName,
-          this.ruleForm.score = this.updateData.score,
-          this.ruleForm.peopleName = this.updateData.peopleName,
-          this.ruleForm.region = this.updateData.region,
-          this.ruleForm.date1 = this.updateData.date1,
-          this.ruleForm.delivery = this.updateData.delivery,
-          this.ruleForm.type = this.updateData.type,
-          this.ruleForm.people = this.updateData.people,
-          this.ruleForm.desc = this.updateData.desc,
-          this.ruleForm.movieArr = this.updateData.movieArr
+        this.ruleForm.name = this.updateData.name;
+        this.ruleForm.eName = this.updateData.eName;
+        this.ruleForm.score = this.updateData.score;
+        this.ruleForm.peopleName = this.updateData.peopleName;
+        this.ruleForm.region = this.updateData.region;
+        this.ruleForm.date1 = this.updateData.date1;
+        this.ruleForm.delivery = this.updateData.delivery;
+        this.ruleForm.type = this.updateData.type;
+        this.ruleForm.people = this.updateData.people;
+        this.ruleForm.desc = this.updateData.desc;
+        this.ruleForm.movieArr = this.updateData.movieArr;
       },
       async replace_id(row){
         this.option_id = row._id;
@@ -426,7 +435,6 @@
           desc: ''
 
         },
-
 
       }
 

@@ -7,7 +7,7 @@ import movie from "../components/movie/store"
 // 影院
 import cinema from "../components/cinema/store"
 // 排片
-import rowPiece from "../components/rowPiece/store"
+import movieMsg from "../components/movieMsg/store"
 // 资讯
 import news from "../components/news/store"
 
@@ -19,7 +19,7 @@ export default new Vuex.Store({
     cinema,
     movie,
     videoHall,
-    rowPiece,
+    movieMsg,
     news
   }
 })

@@ -23,7 +23,7 @@
                 </el-menu-item>
               </router-link>
 
-              <router-link to="/RowPiece">
+              <router-link to="/movieMsg">
                 <el-menu-item index="2">
                   <i class="el-icon-star-on"></i>
                   排片信息

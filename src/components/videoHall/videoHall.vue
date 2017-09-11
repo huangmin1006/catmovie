@@ -8,6 +8,7 @@
               :data="cinemaList"
               border
               highlight-current-row
+              height="300"
               @cell-mouse-enter="toAddHallState"
             >
               <el-table-column
@@ -17,17 +18,19 @@
               <el-table-column
                 prop="cinemaName"
                 label="影院名"
-                width="180">
+                width="200"
+                show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                 prop="cityName"
                 label="影院城市"
-                width="150">
+                width="120">
               </el-table-column>
               <el-table-column
                 prop="address"
                 label="地址"
-                width="250">
+                width="280"
+                show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                 prop="telephone"
@@ -42,6 +45,16 @@
                 </template>
               </el-table-column>
             </el-table>
+
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[5]"
+              :page-size="5"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="cinemaList.total">
+            </el-pagination>
           </template>
         </div>
       </el-tab-pane>
@@ -100,6 +113,7 @@
   import {mapState,mapActions} from "vuex"
   import {
             GET_HALL_LIST,
+    ASYNC_ROWS_CINEMA,
             ASYNC_ADD_HALL,
             ASYNC_DEL_HALL,
             ASYNC_CINEMAID_GET_HALL_LIST,
@@ -111,11 +125,8 @@
 
     //第一次更新页面数据
     beforeMount(){
+      this[ASYNC_ROWS_CINEMA]({rows:5});
       this[ASYNC_GET_CINEMA_LIST]({});
-    },
-
-    mounted() {
-//      console.log(this.$store._actions.videoHall/ASYNC_DEL_HALL)
     },
 
 
@@ -135,7 +146,8 @@
           name:''
         },
 
-
+        // 分页
+        currentPage: 1,
       };
     },
 
@@ -143,6 +155,7 @@
     methods: {
       ...mapActions("videoHall", [ASYNC_GET_CINEMA_LIST,
                                     ASYNC_DEL_HALL,
+                                    ASYNC_ROWS_CINEMA,
                                     GET_HALL_LIST,
                                     ASYNC_CINEMAID_GET_HALL_LIST,
                                     ASYNC_ADD_HALL]),
@@ -161,6 +174,15 @@
           this.videoHall.id = this.currentRow._id;
           this[ASYNC_CINEMAID_GET_HALL_LIST]({_id:this.videoHall.id});
         }
+      },
+
+
+      // 分页
+      handleSizeChange() {
+
+      },
+      handleCurrentChange(val) {
+        this[ASYNC_ROWS_CINEMA]({curpage:val})
       },
 
 
@@ -193,7 +215,7 @@
 
     // 计算属性
     computed: {
-      ...mapState("videoHall", ["cinemaList","hallList"]),
+      ...mapState("videoHall", ["cinemaList","hallList","hallRowsList"]),
     }
   };
 </script>

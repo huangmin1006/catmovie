@@ -7,7 +7,7 @@ export const ASYNC_ADD_CINEMA = "ASYNC_ADD_CINEMA";
 export const ASYNC_GET_CINEMA_LIST = "ASYNC_GET_CINEMA_LIST";
 export const ASYNC_DEL_CINEMA = "ASYNC_DEL_CINEMA";
 export const ASYNC_DEL_HALL = "ASYNC_DEL_HALL";
-export const ASYNC_ROWS_HALL = "ASYNC_ROWS_HALL";
+export const ASYNC_ROWS_CINEMA = "ASYNC_ROWS_CINEMA";
 
 
 let delCinemaId = null;
@@ -91,12 +91,13 @@ const store = {
 
 
     //分页
-    async[ASYNC_ROWS_HALL]({commit}) {
+    async[ASYNC_ROWS_CINEMA]({commit},cinema) {
       const {
         data
       } = await axios.get("http://localhost:8888/cinema/find",{
         params: {
-          rows: 5
+          rows: cinema.rows,
+          page: cinema.curpage
         }
       });
       console.log(data);

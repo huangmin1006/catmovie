@@ -7,7 +7,7 @@ import VideoHall from '../components/videoHall/videoHall.vue'
 import Movie from '../components/movie/movie.vue'
 import News from '../components/news/news.vue'
 import Cinema from '../components/cinema/cinema.vue'
-import RowPiece from '../components/rowPiece/rowPiece.vue'
+import movieMsg from '../components/movieMsg/movieMsg.vue'
 import Login from '../components/login/login.vue'
 
 Vue.use(Router);
@@ -36,8 +36,8 @@ export default new Router({
       path: '/Movie',
       component: Movie
     }, {
-      path: '/RowPiece',
-      component: RowPiece
+      path: '/movieMsg',
+      component: movieMsg
     }, {
       path: '/Cinema',
       component: Cinema

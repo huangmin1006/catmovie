@@ -27,9 +27,10 @@
         <div class="cinemaSel">
           <template>
             <el-table
-              :data="cinemaList"
+              :data="cinemaRowsList.rows"
               border
               highlight-current-row
+              height="300"
               @current-change="handleCurrentChange"
               >
               <el-table-column
@@ -39,6 +40,7 @@
               <el-table-column
                 prop="cinemaName"
                 label="影院名"
+                show-overflow-tooltip
                 width="180">
               </el-table-column>
               <el-table-column
@@ -49,6 +51,7 @@
               <el-table-column
                 prop="address"
                 label="地址"
+                show-overflow-tooltip
                 width="250">
               </el-table-column>
               <el-table-column
@@ -75,11 +78,10 @@
           <template>
             <div class="block">
               <el-pagination
-                :data="cinemaRowsList"
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="currentPage"
-                :page-sizes="[100, 200, 300, 400]"
+                :page-sizes="[5]"
                 :page-size="5"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="cinemaRowsList.total">
@@ -116,7 +118,7 @@
 <script>
   import axios from "axios"
   import {mapState} from "vuex"
-  import {ASYNC_ADD_CINEMA,ASYNC_ROWS_HALL,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST} from "./store"
+  import {ASYNC_ADD_CINEMA,ASYNC_ROWS_CINEMA,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST} from "./store"
   import {mapActions } from "vuex"
 
 
@@ -124,8 +126,8 @@
 
 //    第一次更新页面数据
     beforeMount(){
-      this[ASYNC_GET_CINEMA_LIST]({});
-      this[ASYNC_ROWS_HALL]({});
+//      this[ASYNC_GET_CINEMA_LIST]({});
+      this[ASYNC_ROWS_CINEMA]({rows:5});
     },
     computed: {
       ...mapState("cinema", ["cinemaList","cinemaRowsList"])
@@ -151,7 +153,7 @@
     },
 
     methods:{
-      ...mapActions("cinema", [ASYNC_ADD_CINEMA,ASYNC_ROWS_HALL,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST]),
+      ...mapActions("cinema", [ASYNC_ADD_CINEMA,ASYNC_ROWS_CINEMA,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST]),
 
       // 移除数据
       deleteRow(index, rows) {
@@ -186,15 +188,15 @@
           telephone: this.formLabelAlign.telephone
         };
         this[ASYNC_ADD_CINEMA](obj);
+//        this[ASYNC_ROWS_CINEMA]();
         this.closeCinema();
       },
 
-      // 分页数据
-      handleSizeChange(val) {
-
+      // 分页
+      handleSizeChange() {
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this[ASYNC_ROWS_CINEMA]({curpage:val})
       }
 
     }

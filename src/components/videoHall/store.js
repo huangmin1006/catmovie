@@ -7,6 +7,7 @@ import axios from 'axios'
 
 export const GET_HALL_LIST = "GET_HALL_LIST";
 export const GET_CINEMA_LIST = "GET_CINEMA_LIST";
+export const GET_ROWS_CINEMA_LIST = "GET_ROWS_CINEMA_LIST";
 
 
 export const ASYNC_ADD_HALL = "ASYNC_ADD_HALL";
@@ -14,9 +15,11 @@ export const ASYNC_GET_CINEMA_LIST = "ASYNC_GET_CINEMA_LIST";
 export const ASYNC_CINEMAID_GET_HALL_LIST = "ASYNC_CINEMAID_GET_HALL_LIST";
 export const ASYNC_GET_HALL_LIST = "ASYNC_ADD_GET_HALL_LIST";
 export const ASYNC_DEL_HALL = "ASYNC_DEL_HALL";
+export const ASYNC_ROWS_CINEMA = "ASYNC_ROWS_CINEMA";
 
 
 let getHallList = null;
+
 
 const store = {
   namespaced: true,
@@ -28,7 +31,11 @@ const store = {
 
 
     //影厅数据
-    hallList: []
+    hallList: [],
+
+
+    // 影厅分页数据
+    hallRowsList: []
   },
 
 
@@ -41,6 +48,10 @@ const store = {
 
     [GET_CINEMA_LIST](state, cinemaList) {
       state.cinemaList = cinemaList;
+    },
+
+    [GET_ROWS_CINEMA_LIST](state, hallRowsList) {
+      state.hallRowsList = hallRowsList;
     }
 
   },
@@ -65,7 +76,6 @@ const store = {
           }
           arr.push(content);
         }
-
         return arr;
       }
       await axios.get("http://localhost:8888/videoHall/add", {
@@ -75,6 +85,26 @@ const store = {
           seatData: JSON.stringify(sets(10,10))
         }
       }, videoHall);
+
+      // 遍历出所有影厅ID
+      const {
+        data
+      } = await axios.get("http://localhost:8888/videoHall/find",{
+        params: {
+          findType:"exact",
+          cinemaID: videoHall.cinemaID
+        }
+      });
+      let hallIdArr = new Set();
+      data.filter((item) => {
+        return hallIdArr.add(item._id);
+      });
+      await axios.get("http://localhost:8888/cinema/update", {
+        params:{
+          _id:videoHall.cinemaID,
+          hallIdArr: hallIdArr
+        }
+      });
       dispatch(ASYNC_GET_HALL_LIST);
     },
 
@@ -126,6 +156,20 @@ const store = {
         }
       });
       commit(GET_HALL_LIST,data);
+    },
+
+
+    //分页
+    async[ASYNC_ROWS_CINEMA]({commit},cinema) {
+      const {
+        data
+      } = await axios.get("http://localhost:8888/cinema/find",{
+        params: {
+          rows: cinema.rows,
+          page: cinema.curpage
+        }
+      });
+      commit(GET_ROWS_CINEMA_LIST,data)
     }
   }
 
