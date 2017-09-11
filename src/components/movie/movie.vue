@@ -2,54 +2,45 @@
   <div>
 
     <!-- 增删查改的页面切换 -->
-    <el-tabs type="border-card">
-      <el-tab-pane label="电影信息">
-        <!-- 查询框-->
-        <div style="margin-top: 15px; margin-bottom: 15px;">
-          <el-input placeholder="请输入内容"  props="search_input">
-            <el-button slot="append" icon="search" @click="searchBtn"></el-button>
-          </el-input>
-        </div>
-
-
+    <el-tabs type="border-card" v-model="all_page">
+      <el-tab-pane label="电影信息" name="one">
         <!-- 显示已有电影信息 -->
         <el-table
-          :data="tableData"
+          :data='tableData'
           border
-          style="width: 100%">
+          style="width: 100%"
+          @cell-mouse-enter="replace_id">
           <el-table-column
-            fixed
-            prop="movie_name"
+            prop="name"
             label="电影名"
-            width="150">
+            width="120">
           </el-table-column>
           <el-table-column
-            prop="movie_type"
+            prop="type"
             label="电影类型"
             width="150">
           </el-table-column>
           <el-table-column
-            prop="movie_area"
-            label="上映地区"
-            width="120">
+            prop="desc"
+            label="电影简介"
+            width="300">
           </el-table-column>
           <el-table-column
-            prop="movie_score"
+            prop="score"
             label="电影评分"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="movie_actors"
+            prop="peopleName"
             label="演职人员"
             width="200">
           </el-table-column>
           <el-table-column
-            prop="movie_time"
-            label="时长"
-            width="130">
+            prop="people"
+            label="想看人数"
+            width="120">
           </el-table-column>
           <el-table-column
-            fixed="right"
             label="操作"
             width="120">
             <template scope="scope">
@@ -68,17 +59,113 @@
           </el-table-column>
 
         </el-table>
-        <div class="block">
-          <el-pagination
-            layout="prev, pager, next"
-            :total="1000">
-          </el-pagination>
-        </div>
       </el-tab-pane>
       <!-- 增加页面 -->
-      <el-tab-pane>
+      <el-tab-pane name="two">
         <span slot="label"><i class="el-icon-date"></i> 新增电影</span>
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="电影名" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="电影英文名" prop="eName">
+            <el-input v-model="ruleForm.eName"></el-input>
+          </el-form-item>
+          <el-form-item label="电影评分" prop="score1">
+            <el-input v-model="ruleForm.score"></el-input>
+          </el-form-item>
+
+          <el-form-item label="演职人员" prop="peopleName">
+            <el-input v-model="ruleForm.peopleName"></el-input>
+          </el-form-item>
+          <el-form-item label="放映厅类型" prop="region">
+            <el-select v-model="ruleForm.region" placeholder="请选择放映厅类型">
+              <el-option label="3D" value="类型一"></el-option>
+              <el-option label="IMAX 3D" value="类型二"></el-option>
+              <el-option label="2D" value="类型三"></el-option>
+              <el-option  label="IMAX 2D" value="类型四"></el-option>
+              <el-option  label="激光放映厅" value="类型五"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="上映时间">
+            <el-col :span="11">
+              <el-form-item prop="date">
+                <el-date-picker type="date" placeholder="上映日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="大陆上映" prop="delivery">
+            <el-switch on-text="" off-text="" v-model="ruleForm.delivery"></el-switch>
+          </el-form-item>
+          <el-form-item label="电影类型" prop="type">
+            <el-checkbox-group v-model="ruleForm.type">
+              <el-checkbox label="动作" name="type"></el-checkbox>
+              <el-checkbox label="冒险" name="type"></el-checkbox>
+              <el-checkbox label="科幻" name="type"></el-checkbox>
+              <el-checkbox label="喜剧" name="type"></el-checkbox>
+              <el-checkbox label="惊悚" name="type"></el-checkbox>
+              <el-checkbox label="恐怖" name="type"></el-checkbox>
+              <el-checkbox label="警匪" name="type"></el-checkbox>
+              <el-checkbox label="纪录" name="type"></el-checkbox>
+              <el-checkbox label="爱情" name="type"></el-checkbox>
+              <el-checkbox label="战争" name="type"></el-checkbox>
+              <el-checkbox label="犯罪" name="type"></el-checkbox>
+              <el-checkbox label="武侠" name="type"></el-checkbox>
+              <el-checkbox label="动画" name="type"></el-checkbox>
+              <el-checkbox label="剧情" name="type"></el-checkbox>
+              <el-checkbox label="青春" name="type"></el-checkbox>
+              <el-checkbox label="励志" name="type"></el-checkbox>
+              <el-checkbox label="伦理" name="type"></el-checkbox>
+              <el-checkbox label="历史" name="type"></el-checkbox>
+              <el-checkbox label="古装" name="type"></el-checkbox>
+              <el-checkbox label="家庭" name="type"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="想看人数" prop="people">
+            <el-input v-model="ruleForm.people"></el-input>
+          </el-form-item>
+          <el-form-item label="电影简介" prop="desc">
+            <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+          </el-form-item>
+
+          <!-- 上传图片 -->
+          <!-- 电影图片 -->
+          <el-form-item label="上传图片">
+            <el-upload
+              class="upload-demo"
+              action="http://localhost:8888/upload"
+              :on-success="movieImgCallback"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList2"
+              list-type="picture"
+            >
+              <el-button size="small" type="primary">点击上传电影图片</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+            <!-- 演职人员图片 -->
+            <el-upload
+              class="upload-demo"
+              action="http://localhost:8888/upload"
+              :on-success="starImgCallback"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList2"
+              list-type="picture">
+              <el-button size="small" type="primary">点击上传演职人员图片</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+          </el-form-item>
+          <!-- 提交 -->
+          <el-form-item>
+            <el-button type="primary" @click="submitForm('ruleForm')">立即增加</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+
+
+      <!-- 修改页面 -->
+      <el-tab-pane label="修改电影" name="three">
+        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">
           <el-form-item label="电影名" prop="name">
             <el-input v-model="ruleForm.name"></el-input>
           </el-form-item>
@@ -105,12 +192,6 @@
             <el-col :span="11">
               <el-form-item prop="date1">
                 <el-date-picker type="date" placeholder="上映日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-              </el-form-item>
-            </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
-              <el-form-item prop="date2">
-                <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -175,134 +256,71 @@
           </el-form-item>
           <!-- 提交 -->
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')">立即增加</el-button>
-            <el-button @click="resetForm('ruleForm')">重置</el-button>
+            <el-button type="primary" @click="submitFormRepalce">立即修改</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <!-- 修改页面 -->
-      <el-tab-pane label="修改电影"> <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="电影名" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="电影英文名" prop="eName">
-          <el-input v-model="ruleForm.eName"></el-input>
-        </el-form-item>
-        <el-form-item label="电影评分" prop="score">
-          <el-input v-model="ruleForm.score"></el-input>
-        </el-form-item>
-
-        <el-form-item label="演职人员" prop="peopleName">
-          <el-input v-model="ruleForm.peopleName"></el-input>
-        </el-form-item>
-        <el-form-item label="放映厅类型" prop="region">
-          <el-select v-model="ruleForm.region" placeholder="请选择放映厅类型">
-            <el-option label="3D" value="类型一"></el-option>
-            <el-option label="IMAX 3D" value="类型二"></el-option>
-            <el-option label="2D" value="类型三"></el-option>
-            <el-option  label="IMAX 2D" value="类型四"></el-option>
-            <el-option  label="激光放映厅" value="类型五"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="上映时间" required>
-          <el-col :span="11">
-            <el-form-item prop="date1">
-              <el-date-picker type="date" placeholder="上映日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col class="line" :span="2">-</el-col>
-          <el-col :span="11">
-            <el-form-item prop="date2">
-              <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-            </el-form-item>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="大陆上映" prop="delivery">
-          <el-switch on-text="" off-text="" v-model="ruleForm.delivery"></el-switch>
-        </el-form-item>
-        <el-form-item label="电影类型" prop="type">
-          <el-checkbox-group v-model="ruleForm.type">
-            <el-checkbox label="动作" name="type"></el-checkbox>
-            <el-checkbox label="冒险" name="type"></el-checkbox>
-            <el-checkbox label="科幻" name="type"></el-checkbox>
-            <el-checkbox label="喜剧" name="type"></el-checkbox>
-            <el-checkbox label="惊悚" name="type"></el-checkbox>
-            <el-checkbox label="恐怖" name="type"></el-checkbox>
-            <el-checkbox label="警匪" name="type"></el-checkbox>
-            <el-checkbox label="纪录" name="type"></el-checkbox>
-            <el-checkbox label="爱情" name="type"></el-checkbox>
-            <el-checkbox label="战争" name="type"></el-checkbox>
-            <el-checkbox label="犯罪" name="type"></el-checkbox>
-            <el-checkbox label="武侠" name="type"></el-checkbox>
-            <el-checkbox label="动画" name="type"></el-checkbox>
-            <el-checkbox label="剧情" name="type"></el-checkbox>
-            <el-checkbox label="青春" name="type"></el-checkbox>
-            <el-checkbox label="励志" name="type"></el-checkbox>
-            <el-checkbox label="伦理" name="type"></el-checkbox>
-            <el-checkbox label="历史" name="type"></el-checkbox>
-            <el-checkbox label="古装" name="type"></el-checkbox>
-            <el-checkbox label="家庭" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item label="想看人数" prop="people">
-          <el-input v-model="ruleForm.people"></el-input>
-        </el-form-item>
-        <el-form-item label="电影简介" prop="desc">
-          <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-        </el-form-item>
-
-        <!-- 上传图片 -->
-        <!-- 电影图片 -->
-        <el-form-item label="上传图片">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="fileList2"
-            list-type="picture">
-            <el-button size="small" type="primary">点击上传电影图片</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-          <!-- 演职人员图片 -->
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :file-list="fileList2"
-            list-type="picture">
-            <el-button size="small" type="primary">点击上传演职人员图片</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-        </el-form-item>
-        <!-- 提交 -->
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">立即修改</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
-        </el-form-item>
-      </el-form></el-tab-pane>
     </el-tabs>
-
-
   </div>
-
-
 </template>
 
 
 <script>
-  import axios from "axios"
+  import {mapState} from "vuex"
+  import {ASYNC_ADD_MOVIE,
+    ASYNC_UPDATE_MIVIE,
+    ASYNC_GET_MOVIE_LIST,
+    ASYNC_GET_MOVIE_LIST_REPLACE
+    ,ASYNC_GET_MOVIE_LIST_DEL} from "./store.js"
+  import {mapActions} from "vuex"
+
   export default {
+    async beforeMount(){
+      await this.$store.dispatch({
+        type: ASYNC_GET_MOVIE_LIST
+      })
+    },
+    computed: {
+      tableData(){
+        return this.$store.state.movie.tableData
+      },
+      updateData(){
+        return this.$store.state.movie.updateData
+      }
+    },
+
     methods: {
-      searchBtn(){
-        console.log(123)
+      // 删除
+      async	deleteRow(index, rows) {
+        await this.$store.dispatch({
+          type:ASYNC_GET_MOVIE_LIST_DEL,
+          id:this.option_id
+        })
       },
-      deleteRow(index, rows) {
-        rows.splice(index, 1);
+      // 修改
+      async handleEdit(index, row) {
+        // 将页面跳转到修改页面
+        this.all_page="three"
+        await this.$store.dispatch({
+          type:ASYNC_GET_MOVIE_LIST_REPLACE,
+          id:this.option_id
+        })
+        this.ruleForm.name = this.updateData.name,
+          this.ruleForm.eName = this.updateData.eName,
+          this.ruleForm.score = this.updateData.score,
+          this.ruleForm.peopleName = this.updateData.peopleName,
+          this.ruleForm.region = this.updateData.region,
+          this.ruleForm.date1 = this.updateData.date1,
+          this.ruleForm.delivery = this.updateData.delivery,
+          this.ruleForm.type = this.updateData.type,
+          this.ruleForm.people = this.updateData.people,
+          this.ruleForm.desc = this.updateData.desc,
+          this.ruleForm.movieArr = this.updateData.movieArr
       },
-      handleEdit(index, row) {
-        console.log(index, row);
+      async replace_id(row){
+        this.option_id = row._id;
+
+
       },
       handleRemove(file, fileList) {
         console.log(file, fileList);
@@ -310,29 +328,86 @@
       handlePreview(file) {
         console.log(file);
       },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+      //增加
+
+      // 上传电影图片
+      movieImgCallback(response,file){
+        let movieImg = response.url;
+        this.movieArrFile.push(movieImg);
+        this.ruleForm.movieArr = this.movieArrFile;
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+
+      // 上传演员图集
+      starImgCallback(response,file){
+        let movieImg = response.url;
+        this.starArrFile.push(movieImg);
+        this.ruleForm.starArr = this.starArrFile;
+      },
+
+
+      submitForm(ruleForm) {
+        // 创建一个对象保存所有电影数据
+        let movieInfo = {
+          name:this.ruleForm.name,
+          eName:this.ruleForm.eName,
+          score:this.ruleForm.score,
+          peopleName:this.ruleForm.peopleName,
+          region:this.ruleForm.region,
+          date1:this.ruleForm.date1,
+          delivery:this.ruleForm.delivery,
+          type:this.ruleForm.type,
+          people:this.ruleForm.people,
+          desc:this.ruleForm.desc,
+          movieArr: this.ruleForm.movieArr,
+          starArr: this.ruleForm.starArr
+        };
+        // 通过dispatch将上面创建的对象发送到主页刷新页面
+        this.$store.dispatch({
+          type:'ASYNC_ADD_MOVIE',
+          movieInfo
+        })
+
+      },
+
+      //修改
+      submitFormRepalce(){
+        //保存点击去修改后获取到的数据
+        let update_movieInfo = {
+          name:this.ruleForm.name,
+          eName:this.ruleForm.eName,
+          score:this.ruleForm.score,
+          peopleName:this.ruleForm.peopleName,
+          region:this.ruleForm.regione,
+          date1:this.ruleForm.date1,
+          delivery:this.ruleForm.delivery,
+          type:this.ruleForm.type,
+          people:this.ruleForm.people,
+          desc:this.ruleForm.desc
+
+        }
+        // 通过dispatch将上面创建的对象发送到主页刷新页面
+        this.$store.dispatch({
+          type:'ASYNC_UPDATE_MIVIE',
+          update_movieInfo,
+          id:this.option_id
+        })
+        this.all_page="one"
+
+
+      },
+
 
     },
 
 
     data() {
       return {
-        fileList2: [
-          {name: '', url: ''},
-          {name: '', url: ''}
-        ],
+
+        movieArrFile: [],
+        starArrFile: [],
+        all_page:'one',
+        option_id:'',
+        fileList2: [],
         ruleForm: {
           name: '',
           eName:'',
@@ -343,92 +418,15 @@
           date2: '',
           delivery: false,
           type: [],
+          movieArr: [],
+          starArr: [],
           search_input: '',
           resource: '',
           people:'',
           desc: ''
 
         },
-        rules: {
-          search_input:[
-            {required:true,message:'请输入搜索条件', trigger:'blur'},
-            {min:1}
-          ],
-          name: [
-            { required: true, message: '请输入电影名称', trigger: 'blur' },
-            { min: 3, max: 10, message: '长度在 3 到 10个字符', trigger: 'blur' }
-          ],
-          eName: [
-            { required: true, message: '请输入电影英文名', trigger: 'blur' },
-            { min: 1, max: 60, message: '长度在 1 到 60个字符', trigger: 'blur' }
-          ],
-          peopleName: [
-            { required: true, message: '请输入演职人员', trigger: 'blur' },
-            { min: 1, max: 999, message: '长度在 1 到 999个字符', trigger: 'blur' }
-          ],
-          region: [
-            { required: true, message: '请选择放映厅', trigger: 'change' }
-          ],
-          date1: [
-            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-          ],
-          date2: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-          ],
-          type: [
-            { type: 'array', required: true, message: '请至少选择一个电影类型', trigger: 'change' }
-          ],
-          people: [
-            { required: true, message: '请输入想看人数', trigger: 'blur' },
-            { min: 0, max: 999999999999999, message: '长度不限', trigger: 'blur' }
-          ],
-          desc: [
-            { required: true, message: '请填写电影简介', trigger: 'blur' }
-          ]
-        },
-        // 发送数据
-        //        actions: {
-        // 	async[ASYNC_INSERT_MESSAGE]({dispatch}, message) {
-        // 		await axios.post("http://localhost:3001/message/insert", message)
-        // 		dispatch(ASYNC_GET_MESSAGE_LIST)
-        // 	},
-        // 	async[ASYNC_GET_MESSAGE_LIST](context) {
-        // 		const {
-        // 			data
-        // 		} = await axios.get("http://localhost:3001/message/getMessage")
-        // 		context.commit(GET_MESSAGE_LIST, data.data)
-        // 	}
-        // },
 
-        tableData: [{
-          movie_name: '长江一号',
-          movie_type: '动画',
-          movie_score: '9.9',
-          movie_time: '102分钟',
-          movie_actors: '周星驰',
-          movie_area: '中国大陆'
-        },{
-          movie_name: '长江一号',
-          movie_type: '动画',
-          movie_score: '9.9',
-          movie_time: '102分钟',
-          movie_actors: '周星驰',
-          movie_area: '中国大陆'
-        }, {
-          movie_name: '长江一号',
-          movie_type: '动画',
-          movie_score: '9.9',
-          movie_time: '102分钟',
-          movie_actors: '周星驰',
-          movie_area: '中国大陆'
-        }, {
-          movie_name: '长江一号',
-          movie_type: '动画',
-          movie_score: '9.9',
-          movie_time: '102分钟',
-          movie_actors: '周星驰',
-          movie_area: '中国大陆'
-        }]
 
       }
 

@@ -27,7 +27,7 @@
         <div class="cinemaSel">
           <template>
             <el-table
-              :data="tableList"
+              :data="cinemaList"
               border
               highlight-current-row
               @current-change="handleCurrentChange"
@@ -61,7 +61,7 @@
                 width="120">
                 <template scope="scope">
                   <el-button
-                    @click.native.prevent="deleteRow(scope.$index, tableList)"
+                    @click.native.prevent="deleteRow(scope.$index, cinemaList)"
                     type="text"
                     size="small">
                     移除
@@ -69,6 +69,22 @@
                 </template>
               </el-table-column>
             </el-table>
+          </template>
+
+          <!--分页-->
+          <template>
+            <div class="block">
+              <el-pagination
+                :data="cinemaRowsList"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[100, 200, 300, 400]"
+                :page-size="5"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="cinemaRowsList.total">
+              </el-pagination>
+            </div>
           </template>
         </div>
       </el-tab-pane>
@@ -100,7 +116,7 @@
 <script>
   import axios from "axios"
   import {mapState} from "vuex"
-  import {ASYNC_ADD_CINEMA,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST} from "./store"
+  import {ASYNC_ADD_CINEMA,ASYNC_ROWS_HALL,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST} from "./store"
   import {mapActions } from "vuex"
 
 
@@ -109,9 +125,10 @@
 //    第一次更新页面数据
     beforeMount(){
       this[ASYNC_GET_CINEMA_LIST]({});
+      this[ASYNC_ROWS_HALL]({});
     },
     computed: {
-      ...mapState("cinema", ["tableList"])
+      ...mapState("cinema", ["cinemaList","cinemaRowsList"])
     },
 
     data(){
@@ -119,7 +136,7 @@
         currentRow: null,
         editableTabsValue: '0',
 
-//        增加DIV
+        // 增加DIV
         labelPosition: 'right',
         formLabelAlign: {
           cinemaName: '',
@@ -127,27 +144,30 @@
           address: '',
           telephone: ''
         },
+
+        // 分页
+        currentPage: 1,
       }
     },
 
     methods:{
-      ...mapActions("cinema", [ASYNC_ADD_CINEMA,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST]),
+      ...mapActions("cinema", [ASYNC_ADD_CINEMA,ASYNC_ROWS_HALL,ASYNC_DEL_CINEMA,ASYNC_GET_CINEMA_LIST]),
 
-//      移除数据
+      // 移除数据
       deleteRow(index, rows) {
         this[ASYNC_DEL_CINEMA]({_id:rows[index]._id});
       },
 
 
 
-//      管理选中事件
+      // 管理选中事件
       handleCurrentChange(val) {
         if(val){
           this.currentRow = val;
         }
       },
 
-      //      取消按钮
+      // 取消按钮
       closeCinema(){
         this.formLabelAlign.cinemaName = '';
         this.formLabelAlign.cityName = '';
@@ -156,7 +176,7 @@
       },
 
 
-//      增加电影院
+      // 增加电影院
       addCinema(){
         this.editableTabsValue = '1';
         let obj = {
@@ -168,6 +188,14 @@
         this[ASYNC_ADD_CINEMA](obj);
         this.closeCinema();
       },
+
+      // 分页数据
+      handleSizeChange(val) {
+
+      },
+      handleCurrentChange(val) {
+        console.log(`当前页: ${val}`);
+      }
 
     }
   }

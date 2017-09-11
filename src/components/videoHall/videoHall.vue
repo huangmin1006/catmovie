@@ -133,7 +133,9 @@
         seatList: 1,
         form:{
           name:''
-        }
+        },
+
+
       };
     },
 
