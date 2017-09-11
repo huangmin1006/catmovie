@@ -8,6 +8,8 @@ import axios from 'axios'
 export const GET_HALL_LIST = "GET_HALL_LIST";
 export const GET_CINEMA_LIST = "GET_CINEMA_LIST";
 export const GET_ROWS_CINEMA_LIST = "GET_ROWS_CINEMA_LIST";
+export const GET_ROWS_HALL_LIST = "GET_ROWS_HALL_LIST";
+export const GET_ADD_HALL_LIST = "GET_ADD_HALL_LIST";
 
 
 export const ASYNC_ADD_HALL = "ASYNC_ADD_HALL";
@@ -16,6 +18,7 @@ export const ASYNC_CINEMAID_GET_HALL_LIST = "ASYNC_CINEMAID_GET_HALL_LIST";
 export const ASYNC_GET_HALL_LIST = "ASYNC_ADD_GET_HALL_LIST";
 export const ASYNC_DEL_HALL = "ASYNC_DEL_HALL";
 export const ASYNC_ROWS_CINEMA = "ASYNC_ROWS_CINEMA";
+export const ASYNC_ROWS_HALL = "ASYNC_ROWS_HALL";
 
 
 let getHallList = null;
@@ -26,12 +29,8 @@ const store = {
 
   state:{
 
-    // 影城列
-    cinemaList: [],
-
-
-    //影厅数据
-    hallList: [],
+    // 影厅分页
+    cinemaRowsList: [],
 
 
     // 影厅分页数据
@@ -42,25 +41,17 @@ const store = {
   // 同步函数，数据的内容
   mutations:{
 
-    [GET_HALL_LIST](state, hallList) {
-      state.hallList = hallList;
+
+    [GET_ROWS_CINEMA_LIST](state, cinemaRowsList) {
+      state.cinemaRowsList = cinemaRowsList;
     },
 
-    [GET_CINEMA_LIST](state, cinemaList) {
-      state.cinemaList = cinemaList;
-    },
-
-    [GET_ROWS_CINEMA_LIST](state, hallRowsList) {
+    [GET_ROWS_HALL_LIST](state, hallRowsList) {
       state.hallRowsList = hallRowsList;
-    }
+    },
+
 
   },
-
-  // getters: {
-  //   ['get'](state) {
-  //     return state.cinemaList,state.hallList;
-  //   },
-  // },
 
   actions:{
 
@@ -127,7 +118,7 @@ const store = {
       const {
         data
       } = await axios.get("http://localhost:8888/cinema/find");
-      commit(GET_CINEMA_LIST,data)
+      commit(GET_ROWS_CINEMA_LIST,data)
     },
 
 
@@ -141,7 +132,7 @@ const store = {
           cinemaID: videoHall._id
         }
       });
-      commit(GET_HALL_LIST,data);
+      commit(GET_ROWS_HALL_LIST,data);
     },
 
 
@@ -155,22 +146,40 @@ const store = {
           cinemaID: getHallList
         }
       });
-      commit(GET_HALL_LIST,data);
+      commit(GET_ROWS_HALL_LIST,data);
     },
 
 
-    //分页
+    //影厅界面的影院分页
     async[ASYNC_ROWS_CINEMA]({commit},cinema) {
       const {
         data
       } = await axios.get("http://localhost:8888/cinema/find",{
         params: {
           rows: cinema.rows,
-          page: cinema.curpage
+          page: cinema.page
         }
       });
-      commit(GET_ROWS_CINEMA_LIST,data)
+      commit(GET_ROWS_CINEMA_LIST,data.rows)
+    },
+
+
+
+    //影厅界面的影厅分页
+    async[ASYNC_ROWS_HALL]({commit},videoHall) {
+      const {
+        data
+      } = await axios.get("http://localhost:8888/videoHall/find",{
+        params: {
+          rows: videoHall.rows,
+          page: videoHall.page
+        }
+      });
+      commit(GET_ROWS_HALL_LIST,data.rows)
     }
+
+
+
   }
 
 };

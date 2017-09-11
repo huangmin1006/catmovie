@@ -5,7 +5,7 @@
         <div class="cinemaSel">
           <template>
             <el-table
-              :data="cinemaList"
+              :data="cinemaRowsList"
               border
               highlight-current-row
               height="300"
@@ -50,10 +50,10 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage"
-              :page-sizes="[5]"
-              :page-size="5"
+              :page-sizes="[10]"
+              :page-size="10"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="cinemaList.total">
+              :total="cinemaRowsList.length">
             </el-pagination>
           </template>
         </div>
@@ -71,7 +71,7 @@
         <div class="hallList">
           <template>
             <el-table
-              :data="hallList"
+              :data="hallRowsList"
               border
               highlight-current-row
               @cell-mouse-enter="selHallList"
@@ -90,7 +90,7 @@
                 width="120">
                 <template scope="scope">
                   <el-button
-                    @click.native.prevent="deleteRow(scope.$index, hallList)"
+                    @click.native.prevent="deleteRow(scope.$index, hallRowsList)"
                     type="text"
                     size="small"
                     >
@@ -99,6 +99,16 @@
                 </template>
               </el-table-column>
             </el-table>
+
+            <el-pagination
+              @size-change="hallSizeChange"
+              @current-change="hallCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[10]"
+              :page-size="10"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="hallRowsList.length">
+            </el-pagination>
           </template>
         </div>
       </el-tab-pane>
@@ -112,8 +122,9 @@
   import axios from "axios"
   import {mapState,mapActions} from "vuex"
   import {
-            GET_HALL_LIST,
-    ASYNC_ROWS_CINEMA,
+
+            ASYNC_ROWS_CINEMA,
+            ASYNC_ROWS_HALL,
             ASYNC_ADD_HALL,
             ASYNC_DEL_HALL,
             ASYNC_CINEMAID_GET_HALL_LIST,
@@ -125,8 +136,7 @@
 
     //第一次更新页面数据
     beforeMount(){
-      this[ASYNC_ROWS_CINEMA]({rows:5});
-      this[ASYNC_GET_CINEMA_LIST]({});
+      this[ASYNC_ROWS_CINEMA]({rows:10});
     },
 
 
@@ -156,7 +166,7 @@
       ...mapActions("videoHall", [ASYNC_GET_CINEMA_LIST,
                                     ASYNC_DEL_HALL,
                                     ASYNC_ROWS_CINEMA,
-                                    GET_HALL_LIST,
+                                    ASYNC_ROWS_HALL,
                                     ASYNC_CINEMAID_GET_HALL_LIST,
                                     ASYNC_ADD_HALL]),
 
@@ -177,12 +187,21 @@
       },
 
 
-      // 分页
+      // 影院分页
       handleSizeChange() {
 
       },
       handleCurrentChange(val) {
-        this[ASYNC_ROWS_CINEMA]({curpage:val})
+        this[ASYNC_ROWS_CINEMA]({page:val})
+      },
+
+
+      // 影厅分页
+      hallSizeChange() {
+
+      },
+      hallCurrentChange(val) {
+        this[ASYNC_ROWS_HALL]({page:val})
       },
 
 
@@ -215,7 +234,7 @@
 
     // 计算属性
     computed: {
-      ...mapState("videoHall", ["cinemaList","hallList","hallRowsList"]),
+      ...mapState("videoHall", ["hallRowsList","cinemaRowsList"]),
     }
   };
 </script>
