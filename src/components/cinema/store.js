@@ -60,24 +60,26 @@ const store = {
 
     //删除影院数据
     async[ASYNC_DEL_CINEMA]({dispatch}, cinema) {
-      delCinemaId = cinema._id;
       await axios.get("http://localhost:8888/cinema/del", {
         params:{
           _id: cinema._id
         }
       }, cinema);
       // 数据改变自动刷新数据
-      dispatch(ASYNC_GET_CINEMA_LIST);
-    },
-
-
-    //删除影院同时根据影院ID删除相关影厅
-    async[ASYNC_DEL_HALL](cinema) {
-      await axios.get("http://localhost:8888/videoHall/del", {
+      // 同时删除影厅数据
+      const {data} = await axios.get("http://localhost:8888/videoHall/find", {
         params:{
-          _id: delCinemaId
+          cinemaID: cinema._id
         }
-      }, cinema);
+      });
+      data.map( (item) => {
+        axios.get("http://localhost:8888/videoHall/del", {
+          params:{
+            _id: item._id
+          }
+        });
+      });
+      dispatch(ASYNC_GET_CINEMA_LIST);
     },
 
 
@@ -86,7 +88,7 @@ const store = {
       const {
         data
       } = await axios.get("http://localhost:8888/cinema/find");
-      commit(GET_CINEMA_LIST,data)
+      commit(GET_ROWS_CINEMA_LIST,data)
     },
 
 
@@ -100,8 +102,7 @@ const store = {
           page: cinema.curpage
         }
       });
-      console.log(data);
-      commit(GET_ROWS_CINEMA_LIST,data)
+      commit(GET_ROWS_CINEMA_LIST,data.rows)
     }
   }
 

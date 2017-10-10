@@ -1,9 +1,6 @@
 <template>
   <div class="catMain">
-    <!--遮罩层-->
-    <!--<div class="closeDiv">-->
 
-    <!--</div>-->
 
     <header>
       <h1>猫眼后台管理系统</h1>
@@ -15,13 +12,6 @@
         <el-row class="tac">
           <el-col :span="8">
             <el-menu default-active="0" class="el-menu-vertical-demo">
-
-              <router-link to="/Admin">
-                <el-menu-item index="1">
-                  <i class="el-icon-menu"></i>
-                  管理员
-                </el-menu-item>
-              </router-link>
 
               <router-link to="/movieMsg">
                 <el-menu-item index="2">
@@ -73,9 +63,6 @@
 
 <script>
   import axios from 'axios'
-//  获取session
-//  let getSession = axios.get('http://127.0.0.1:8888/getSession',{});
-//  console.log(getSession);
 
   export default {
     name: 'catMain',

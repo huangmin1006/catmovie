@@ -5,11 +5,8 @@
 import axios from 'axios'
 
 
-export const GET_HALL_LIST = "GET_HALL_LIST";
-export const GET_CINEMA_LIST = "GET_CINEMA_LIST";
 export const GET_ROWS_CINEMA_LIST = "GET_ROWS_CINEMA_LIST";
 export const GET_ROWS_HALL_LIST = "GET_ROWS_HALL_LIST";
-export const GET_ADD_HALL_LIST = "GET_ADD_HALL_LIST";
 
 
 export const ASYNC_ADD_HALL = "ASYNC_ADD_HALL";
@@ -113,17 +110,8 @@ const store = {
     },
 
 
-    // 最初显示影院数据
-    async[ASYNC_GET_CINEMA_LIST]({commit},cinema) {
-      const {
-        data
-      } = await axios.get("http://localhost:8888/cinema/find");
-      commit(GET_ROWS_CINEMA_LIST,data)
-    },
-
-
     // 根据影院的ID来刷新影厅数据
-    async[ASYNC_CINEMAID_GET_HALL_LIST]({commit},videoHall) {
+    async[ASYNC_GET_CINEMA_LIST]({commit},videoHall) {
       const {
         data
       } = await axios.get("http://localhost:8888/videoHall/find",{
@@ -131,7 +119,7 @@ const store = {
           findType:"exact",
           cinemaID: videoHall._id
         }
-      });
+      },videoHall);
       commit(GET_ROWS_HALL_LIST,data);
     },
 

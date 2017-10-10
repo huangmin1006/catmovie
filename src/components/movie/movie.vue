@@ -12,6 +12,10 @@
           height="300"
           @cell-mouse-enter="replace_id">
           <el-table-column
+            type="index"
+            width="40">
+          </el-table-column>
+          <el-table-column
             prop="name"
             label="电影名"
             width="120"
@@ -76,6 +80,9 @@
           </el-form-item>
           <el-form-item label="电影英文名" prop="eName">
             <el-input v-model="ruleForm.eName"></el-input>
+          </el-form-item>
+          <el-form-item label="电影英文名" prop="eName">
+            <el-input v-model="ruleForm.time"></el-input>
           </el-form-item>
           <el-form-item label="电影评分" prop="score1">
             <el-input v-model="ruleForm.score"></el-input>
@@ -316,6 +323,7 @@
         })
         this.ruleForm.name = this.updateData.name;
         this.ruleForm.eName = this.updateData.eName;
+        this.ruleForm.time = this.updateData.time;
         this.ruleForm.score = this.updateData.score;
         this.ruleForm.peopleName = this.updateData.peopleName;
         this.ruleForm.region = this.updateData.region;
@@ -332,10 +340,8 @@
 
       },
       handleRemove(file, fileList) {
-        console.log(file, fileList);
       },
       handlePreview(file) {
-        console.log(file);
       },
       //增加
 
@@ -358,6 +364,7 @@
         // 创建一个对象保存所有电影数据
         let movieInfo = {
           name:this.ruleForm.name,
+          time:this.ruleForm.time,
           eName:this.ruleForm.eName,
           score:this.ruleForm.score,
           peopleName:this.ruleForm.peopleName,
@@ -384,6 +391,7 @@
         let update_movieInfo = {
           name:this.ruleForm.name,
           eName:this.ruleForm.eName,
+          time:this.ruleForm.time,
           score:this.ruleForm.score,
           peopleName:this.ruleForm.peopleName,
           region:this.ruleForm.regione,
@@ -445,8 +453,6 @@
   .el-select .el-input {
     width: 100px;
   }
-
-
 </style>
 
 

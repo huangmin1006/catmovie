@@ -27,7 +27,7 @@
         <div class="cinemaSel">
           <template>
             <el-table
-              :data="cinemaRowsList.rows"
+              :data="cinemaRowsList"
               border
               highlight-current-row
               height="300"
@@ -64,7 +64,7 @@
                 width="120">
                 <template scope="scope">
                   <el-button
-                    @click.native.prevent="deleteRow(scope.$index, cinemaRowsList.rows)"
+                    @click.native.prevent="deleteRow(scope.$index, cinemaRowsList)"
                     type="text"
                     size="small">
                     移除
@@ -81,10 +81,10 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="currentPage"
-                :page-sizes="[5]"
-                :page-size="5"
+                :page-sizes="[10]"
+                :page-size="10"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="cinemaRowsList.total">
+                :total="cinemaRowsList.length">
               </el-pagination>
             </div>
           </template>
@@ -127,7 +127,7 @@
 //    第一次更新页面数据
     beforeMount(){
 //      this[ASYNC_GET_CINEMA_LIST]({});
-      this[ASYNC_ROWS_CINEMA]({rows:5});
+      this[ASYNC_ROWS_CINEMA]({rows:10});
     },
     computed: {
       ...mapState("cinema", ["cinemaList","cinemaRowsList"])

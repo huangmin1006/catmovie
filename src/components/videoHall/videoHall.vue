@@ -60,6 +60,7 @@
       </el-tab-pane>
       <el-tab-pane label="增加影厅">
         <el-form ref="form" :model="form" label-width="80px">
+          <p>{{cinemaName}}</p>
           <el-form-item label="影厅名称">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
@@ -155,6 +156,7 @@
         form:{
           name:''
         },
+        cinemaName: '',
 
         // 分页
         currentPage: 1,
@@ -173,16 +175,16 @@
       //管理选中事件
       toAddHallState(val) {
         this.currentRow = val;
+        this.cinemaName = val.cinemaName;
       },
 
 
       // 增加放映厅按钮,并刷新当前影院的放映厅
       // (根据选中影院的ID，去匹配影厅里面添加的影院ID)
-      addHallBtn(){
+      async addHallBtn(){
         if(this.currentRow._id){
           this.editableTabsValue = "1";
-          this.videoHall.id = this.currentRow._id;
-          this[ASYNC_CINEMAID_GET_HALL_LIST]({_id:this.videoHall.id});
+          await this[ASYNC_GET_CINEMA_LIST]({_id:this.currentRow._id});
         }
       },
 
@@ -212,14 +214,14 @@
 
 
       //立即增加按钮  增加 → 影厅数据
-      addHallData(){
+      async addHallData(){
         let obj = {
-          cinemaID: this.videoHall.id,
+          cinemaID: this.currentRow._id,
           hallName: this.form.name,
           seatLine: this.seatLine,
           seatList: this.seatList,
         };
-        this[ASYNC_ADD_HALL](obj);
+        await this[ASYNC_ADD_HALL](obj);
       },
 
 
@@ -245,6 +247,9 @@
     width: 400px;
   }
 
+  p{
+    margin: 5px 0 0 0 ;
+  }
   .el-form{
     display: flex;
   }

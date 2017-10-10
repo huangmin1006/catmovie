@@ -27,7 +27,6 @@ export default {
     // 增加
     [GET_MOVIE_LIST](state, tableData){
       state.tableData = tableData;
-      console.log(123);
       return state
     },
     // 修改
@@ -66,6 +65,7 @@ export default {
         params:{
           _id:obj.id,
           name:obj.update_movieInfo.name,
+          time:obj.update_movieInfo.time,
           eName:obj.update_movieInfo.eName,
           score:obj.update_movieInfo.score,
           peopleName:obj.update_movieInfo.peopleName,
